@@ -2,10 +2,10 @@ version: '3.7'
 
 services: 
     magento:
-        image: magento-nginx:1.13
-        build: ./images/nginx/1.13
+        image: magento-nginx:1.17
+        build: ./images/nginx/1.17
         ports: 
-            - "80:8000"
+            - "80:8080"
             - "443:8443"
         environment: 
             - HOSTNAME=l.m2.com
@@ -14,7 +14,7 @@ services:
             - phpfpm
         volumes: &appvolumes
             - ~/.composer:/var/www/.composer:delegated
-            - ./../:/var/www/html
+            - ./../html:/var/www/html
             - sockdata:/sock
 
     phpfpm:
