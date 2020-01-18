@@ -1,7 +1,7 @@
 version: '3.7'
 
 services: 
-    magento:
+    app:
         image: magento-nginx:1.17
         build: ./images/nginx/1.17
         ports: 
@@ -13,8 +13,8 @@ services:
             - db
             - phpfpm
         volumes: &appvolumes
-            - ~/.composer:/var/www/.composer:delegated
-            - ./../html:/var/www/html
+            # - ~/.composer:/var/www/.composer:delegated
+            - ./html:/var/www/html
             - sockdata:/sock
 
     phpfpm:
@@ -39,10 +39,9 @@ services:
         image: magento-elasticsearch:6.5.4-0
         build: ./images/elasticsearch/6.5
         ports:
-        - "9200:9200"
-        - "9300:9300"
+            - "9200:9200"
+            - "9300:9300"
 
 volumes:
-    appdata:
     dbdata:
     sockdata:
