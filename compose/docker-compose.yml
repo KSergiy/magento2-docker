@@ -13,8 +13,16 @@ services:
             - db
             - phpfpm
         volumes: &appvolumes
-            # - ~/.composer:/var/www/.composer:delegated
-            - ./html:/var/www/html
+            - ~/.composer:/var/www/.composer:delegated
+            - appdata:/var/www/html
+#            - ./../html:/var/www/html
+            - ./../html/app/code:/var/www/html/app/code:delegated
+            - ./../html/app/design:/var/www/html/app/design:delegated
+            - ./../html/app/etc:/var/www/html/app/etc:delegated
+            - ./../html/var/log:/var/www/html/var/log:delegated
+            - ./../html/composer.json:/var/www/html/composer.json:delegated
+            - ./../html/composer.lock:/var/www/html/composer.lock:delegated
+            - ./../html/nginx.conf.sample:/var/www/html/nginx.conf:delegated
             - sockdata:/sock
 
     phpfpm:
@@ -35,13 +43,14 @@ services:
     redis:
         image: redis:5.0
 
-    elasticsearch:
-        image: magento-elasticsearch:6.5.4-0
-        build: ./images/elasticsearch/6.5
-        ports:
-            - "9200:9200"
-            - "9300:9300"
+#    elasticsearch:
+#        image: magento-elasticsearch:6.5.4-0
+#        build: ./images/elasticsearch/6.5
+#        ports:
+#            - "9200:9200"
+#            - "9300:9300"
 
 volumes:
+    appdata:
     dbdata:
     sockdata:

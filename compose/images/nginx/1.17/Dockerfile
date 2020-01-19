@@ -17,10 +17,8 @@ RUN echo 'alias ll="ls -al"' >> ~/.bashrc
 COPY ./conf/certs/nginx.key /etc/nginx/certs/
 COPY ./conf/certs/nginx.crt /etc/nginx/certs/
 COPY ./conf/nginx.conf /etc/nginx/
+COPY ./conf/magento.conf /etc/nginx/conf.d/
 COPY ./conf/default.conf /etc/nginx/conf.d/
-
-# RUN mkdir -p /etc/nginx/html /var/www/html \
-#    && chown -R app:app /etc/nginx /var/www /var/cache/nginx /var/run/nginx.pid /sock
 
 RUN mkdir -p /etc/nginx/html /var/cache/nginx /var/cache/nginx/client_temp \
     && chown -R app:app /etc/nginx /var/cache/nginx /var/cache/nginx/client_temp /var/run/nginx.pid /sock
