@@ -92,8 +92,8 @@ COPY conf/php.ini /usr/local/etc/php/
 COPY conf/php-fpm.conf /usr/local/etc/
 COPY bin/cronstart /usr/local/bin/
 
-RUN mkdir -p /var/www/html /sock \
-    && chown -R app:app /var/www /usr/local/etc/php/conf.d /sock
+RUN mkdir -p /var/www/html /var/www/html/project /sock \
+    && chown -R app:app /var/www /var/www/html /var/www/html/project /usr/local/etc/php/conf.d /sock
 
 USER app:app
 
