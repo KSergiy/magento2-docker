@@ -15,7 +15,14 @@ services:
         volumes: &appvolumes
             - ~/.composer:/var/www/.composer:delegated
             - appdata:/var/www/html
-#            - ./../html:/var/www/html
+            # - ./../html:/var/www/html/project
+            - ./../html/app/code:/var/www/html/project/app/code:delegated
+            - ./../html/app/design:/var/www/html/project/app/design:delegated
+            - ./../html/app/etc:/var/www/html/project/app/etc:delegated
+            - ./../html/var/log:/var/www/html/project/var/log:delegated
+            - ./../html/composer.json:/var/www/html/project/composer.json:delegated
+            - ./../html/composer.lock:/var/www/html/project/composer.lock:delegated
+            - ./../html/nginx.conf.sample:/var/www/html/project/nginx.conf:delegated
             - sockdata:/sock
 
     phpfpm:
