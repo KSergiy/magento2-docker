@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+  app:
+    volumes: &appvolumes
+        # - ./../html:/var/www/html/project
+        - ./../html/app/code:/var/www/html/project/app/code:delegated
+        - ./../html/app/design:/var/www/html/project/app/design:delegated
+        - ./../html/app/etc:/var/www/html/project/app/etc:delegated
+        - ./../html/var/log:/var/www/html/project/var/log:delegated
+        - ./../html/composer.json:/var/www/html/project/composer.json:delegated
+        - ./../html/composer.lock:/var/www/html/project/composer.lock:delegated
+        - ./../html/nginx.conf.sample:/var/www/html/project/nginx.conf:delegated
+
+  phpfpm:
+    volumes: *appvolumes
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025"
+      - "8025:8025"
+
+  # Disabling cron by default as it uses higher CPU, enable if needed
+  #cron:
+  #  volumes: *appvolumes

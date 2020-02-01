@@ -1,0 +1,4 @@
+#!/bin/bash
+
+BIN_SRC="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+docker-compose -f $BIN_SRC/../docker-compose.yml -f $BIN_SRC/../docker-compose.dev.yml  up -d

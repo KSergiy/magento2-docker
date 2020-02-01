@@ -1,0 +1,16 @@
+#!/bin/bash
+bin/cli rm project/misc.xml
+bin/magento dev:urn-catalog:generate project/misc.xml
+bin/copyfromcontainer misc.xml
+
+REAL_SRC=$(cd -P "./../html" && pwd)
+
+sed -i .bak "s?/var/www/html?$PROJECT_DIR$/?g" $REAL_SRC/misc.xml
+rm $REAL_SRC/misc.xml.bak
+sed -i .bak "s?/project\\/?/?g" $REAL_SRC/misc.xml
+rm $REAL_SRC/misc.xml.bak
+
+mkdir -p $REAL_SRC/.idea
+mv $REAL_SRC/misc.xml $REAL_SRC/.idea/misc.xml
+
+echo "URN's have been generated, you may now restart PHPStorm"
