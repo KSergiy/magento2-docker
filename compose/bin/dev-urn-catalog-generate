@@ -1,6 +1,6 @@
 #!/bin/bash
-bin/cli rm project/misc.xml
-bin/magento dev:urn-catalog:generate project/misc.xml
+bin/cli rm misc.xml
+bin/magento dev:urn-catalog:generate misc.xml
 bin/copyfromcontainer misc.xml
 
 REAL_SRC=$(cd -P "./../html" && pwd)

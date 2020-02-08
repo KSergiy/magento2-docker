@@ -1,4 +1,4 @@
-FROM php:7.3-fpm-buster
+FROM php:7.1-fpm-buster
 
 RUN apt-get update && apt-get install -y \
     cron \
@@ -38,7 +38,6 @@ RUN docker-php-ext-install \
     pdo_mysql \
     soap \
     sockets \
-    sodium \
     sysvmsg \
     sysvsem \
     sysvshm \
@@ -92,8 +91,8 @@ COPY conf/php.ini /usr/local/etc/php/
 COPY conf/php-fpm.conf /usr/local/etc/
 COPY bin/cronstart /usr/local/bin/
 
-RUN mkdir -p /var/www/html /sock \
-    && chown -R app:app /var/www /var/www/html /usr/local/etc/php/conf.d /sock
+RUN mkdir -p /var/www/html /var/www/html/project /sock \
+    && chown -R app:app /var/www /var/www/html /var/www/html/project /usr/local/etc/php/conf.d /sock
 
 USER app:app
 

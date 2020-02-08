@@ -1,4 +1,4 @@
-FROM php:7.3-fpm-buster
+FROM php:7.2-fpm-buster
 
 RUN apt-get update && apt-get install -y \
     cron \
@@ -38,7 +38,6 @@ RUN docker-php-ext-install \
     pdo_mysql \
     soap \
     sockets \
-    sodium \
     sysvmsg \
     sysvsem \
     sysvshm \
