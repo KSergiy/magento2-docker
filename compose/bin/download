@@ -1,0 +1,15 @@
+#!/bin/bash
+[ -z "$1" ] && echo "Please specify the version to download (ex. 2.0.0)" && exit
+
+REAL_SRC=$(cd -P "./../html" && pwd)
+
+if [ ! -f ~/.docker-magento/magento2-$1.tar.gz ]; then
+    mkdir -p ~/.docker-magento
+    (cd ~/.docker-magento && curl -OL http://pubfiles.nexcess.net/magento/ce-packages/magento2-$1.tar.gz)
+fi
+
+echo "Extracting magento2-$1.tar.gz to ./html"
+tar xzf ~/.docker-magento/magento2-$1.tar.gz -o -C $REAL_SRC
+
+echo "Delete downloaded archive"
+rm ~/.docker-magento/magento2-$1.tar.gz
