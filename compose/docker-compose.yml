@@ -17,6 +17,7 @@ services:
             - ~/.composer:/var/www/.composer:delegated
             - appdata:/var/www/html
             - sockdata:/sock
+            - ssldata:/etc/nginx/certs
 
     phpfpm:
         container_name: m2-phpfpm
@@ -38,7 +39,17 @@ services:
             - dbdata:/var/lib/mysql
 
     redis:
+        container_name: m2-redis
         image: redis:5.0
+
+    rabbitmq:
+        container_name: m2-rabbitmq
+        image: rabbitmq:3.7-management
+        ports:
+            - "15672:15672"
+            - "5672:5672"
+        volumes:
+            - rabbitmqdata:/var/lib/rabbitmq
 
     elasticsearch:
         container_name: m2-elasticsearch
@@ -52,3 +63,5 @@ volumes:
     appdata:
     dbdata:
     sockdata:
+    rabbitmqdata:
+    ssldata:

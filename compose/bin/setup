@@ -1,20 +1,21 @@
 #!/bin/bash
 BASE_URL=${1:-magento2.test}
+REAL_SRC=$(cd -P "./../html" && pwd)
 
 bin/stop
 
 # fix for invalid google-shopping-api checksum contained in archive installs (temporary fix until nexcess archive is patched)
-sed -e 's/5f5929ef9f2ec4ca048a2add261d22c92807630f/ce31e720d60451784b9fdb3769e43e149f50d436/' html/composer.lock > composer.lock && mv composer.lock html/composer.lock
+sed -e 's/5f5929ef9f2ec4ca048a2add261d22c92807630f/ce31e720d60451784b9fdb3769e43e149f50d436/' $REAL_SRC/composer.lock > composer.lock && mv composer.lock $REAL_SRC/composer.lock
 
 docker-compose -f docker-compose.yml up -d
 sleep 1 #Ensure containers are started...
 
 curl -O https://files.magerun.net/n98-magerun2.phar
 chmod +x n98-magerun2.phar
-mv n98-magerun2.phar src/bin/n98-magerun2.phar
+mv n98-magerun2.phar $REAL_SRC/bin/n98-magerun2.phar
 
 echo "Copying all files from host to container..."
-rm -rf html/vendor #Clear for step below
+rm -rf $REAL_SRC/vendor #Clear for step below
 bin/copytocontainer --all
 
 bin/clinotty chmod u+x bin/magento
@@ -54,7 +55,7 @@ bin/clinotty composer global require hirak/prestissimo
 bin/clinotty composer install
 
 bin/clinotty bin/magento setup:install \
-  --db-host=db \
+  --db-host=m2-db \
   --db-name=magento \
   --db-user=magento \
   --db-password=magento \
@@ -67,7 +68,7 @@ bin/clinotty bin/magento setup:install \
   --language=en_US \
   --currency=USD \
   --timezone=America/New_York \
-  --amqp-host=rabbitmq \
+  --amqp-host=m2-rabbitmq \
   --amqp-port=5672 \
   --amqp-user=guest \
   --amqp-password=guest \
@@ -83,13 +84,13 @@ echo "Forcing deploy of static content to speed up initial requests..."
 bin/clinotty bin/magento setup:static-content:deploy -f 
 
 echo "Enabling Redis for cache..."
-bin/clinotty bin/magento setup:config:set --no-interaction --cache-backend=redis --cache-backend-redis-server=redis --cache-backend-redis-db=0
+bin/clinotty bin/magento setup:config:set --no-interaction --cache-backend=redis --cache-backend-redis-server=m2-redis --cache-backend-redis-db=0
 
 echo "Enabling Redis for Full Page Cache..."
-bin/clinotty bin/magento setup:config:set --no-interaction  --page-cache=redis --page-cache-redis-server=redis --page-cache-redis-db=1
+bin/clinotty bin/magento setup:config:set --no-interaction  --page-cache=redis --page-cache-redis-server=m2-redis --page-cache-redis-db=1
 
 echo "Enabling Redis for session..."
-bin/clinotty bin/magento setup:config:set --no-interaction --session-save=redis --session-save-redis-host=redis --session-save-redis-log-level=4 --session-save-redis-db=2
+bin/clinotty bin/magento setup:config:set --no-interaction --session-save=redis --session-save-redis-host=m2-redis --session-save-redis-log-level=4 --session-save-redis-db=2
 
 echo "Clearing the cache for good measure..."
 bin/clinotty bin/magento cache:flush
@@ -99,7 +100,7 @@ bin/copyfromcontainer app
 bin/copyfromcontainer vendor
 
 echo "Generating SSL certificate..."
-# bin/setup-ssl $BASE_URL
+bin/setup-ssl $BASE_URL
 
 echo "Docker development environment setup complete."
 echo "You may now access your Magento instance at https://${BASE_URL}/"
