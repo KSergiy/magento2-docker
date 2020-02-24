@@ -1,2 +1,4 @@
 /html/*
+/compose/.env
 .DS_Store
+.idea

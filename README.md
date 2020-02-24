@@ -13,7 +13,8 @@
 
 ### Docker configurations:
 
-1. in file docker-compose.yml - need to change parameter container_name for each container and set unique name in case you use few projects.
+1. change file env.sample to .env
+2. in file .env fill PROJECT_NAME and PROJECT_HOST variables
 
 ### Configure PHPStorm Debugger
 

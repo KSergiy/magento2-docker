@@ -55,7 +55,7 @@ bin/clinotty composer global require hirak/prestissimo
 bin/clinotty composer install
 
 bin/clinotty bin/magento setup:install \
-  --db-host=m2-db \
+  --db-host=db \
   --db-name=magento \
   --db-user=magento \
   --db-password=magento \
@@ -68,7 +68,7 @@ bin/clinotty bin/magento setup:install \
   --language=en_US \
   --currency=USD \
   --timezone=America/New_York \
-  --amqp-host=m2-rabbitmq \
+  --amqp-host=rabbitmq \
   --amqp-port=5672 \
   --amqp-user=guest \
   --amqp-password=guest \
@@ -84,13 +84,13 @@ echo "Forcing deploy of static content to speed up initial requests..."
 bin/clinotty bin/magento setup:static-content:deploy -f 
 
 echo "Enabling Redis for cache..."
-bin/clinotty bin/magento setup:config:set --no-interaction --cache-backend=redis --cache-backend-redis-server=m2-redis --cache-backend-redis-db=0
+bin/clinotty bin/magento setup:config:set --no-interaction --cache-backend=redis --cache-backend-redis-server=redis --cache-backend-redis-db=0
 
 echo "Enabling Redis for Full Page Cache..."
-bin/clinotty bin/magento setup:config:set --no-interaction  --page-cache=redis --page-cache-redis-server=m2-redis --page-cache-redis-db=1
+bin/clinotty bin/magento setup:config:set --no-interaction  --page-cache=redis --page-cache-redis-server=redis --page-cache-redis-db=1
 
 echo "Enabling Redis for session..."
-bin/clinotty bin/magento setup:config:set --no-interaction --session-save=redis --session-save-redis-host=m2-redis --session-save-redis-log-level=4 --session-save-redis-db=2
+bin/clinotty bin/magento setup:config:set --no-interaction --session-save=redis --session-save-redis-host=redis --session-save-redis-log-level=4 --session-save-redis-db=2
 
 echo "Clearing the cache for good measure..."
 bin/clinotty bin/magento cache:flush
