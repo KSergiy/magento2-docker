@@ -51,6 +51,17 @@ services:
         volumes:
             - rabbitmqdata:/var/lib/rabbitmq
 
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: ${PROJECT_NAME}-phpmyadmin
+        environment:
+            - PMA_ARBITRARY=1
+        restart: always
+        ports:
+            - "8080:80"
+        volumes:
+            - /sessions
+
 #    elasticsearch:
 #        container_name: ${PROJECT_NAME}-elasticsearch
 #        image: magento-elasticsearch:6.5.4-0
