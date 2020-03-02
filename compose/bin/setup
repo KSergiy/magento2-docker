@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# Read data from .env file
+CONFIG_SRC=$(cd -P "./../compose" && pwd)
+export $(xargs < $CONFIG_SRC/.env)
+
 BASE_URL=${1:-magento2.test}
 REAL_SRC=$(cd -P "./../html" && pwd)
 
@@ -56,15 +61,15 @@ bin/clinotty composer install
 
 bin/clinotty bin/magento setup:install \
   --db-host=db \
-  --db-name=magento \
-  --db-user=magento \
-  --db-password=magento \
+  --db-name=$MYSQL_DATABASE \
+  --db-user=$MYSQL_USER \
+  --db-password=$MYSQL_PASSWORD \
   --base-url=https://$BASE_URL/ \
   --admin-firstname=John \
   --admin-lastname=Smith \
   --admin-email=john.smith@gmail.com \
-  --admin-user=john.smith \
-  --admin-password=password123 \
+  --admin-user=$MAGENTO_USER \
+  --admin-password=$MAGENTO_PASSWORD \
   --language=en_US \
   --currency=USD \
   --timezone=America/New_York \
@@ -81,7 +86,7 @@ bin/clinotty bin/magento deploy:mode:set developer
 bin/clinotty bin/magento indexer:reindex
 
 echo "Forcing deploy of static content to speed up initial requests..."
-bin/clinotty bin/magento setup:static-content:deploy -f 
+bin/clinotty bin/magento setup:static-content:deploy -f
 
 echo "Enabling Redis for cache..."
 bin/clinotty bin/magento setup:config:set --no-interaction --cache-backend=redis --cache-backend-redis-server=redis --cache-backend-redis-db=0

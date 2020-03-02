@@ -1,2 +1,7 @@
 #!/bin/bash
-bin/cli mysql -hdb -umagento -pmagento magento
+
+# Read data from .env file
+CONFIG_SRC=$(cd -P "./../compose" && pwd)
+export $(xargs < $CONFIG_SRC/.env)
+
+bin/cli mysql -hdb -u$MYSQL_USER -p$$MYSQL_PASSWORD $MYSQL_DATABASE

@@ -1,0 +1,6 @@
+#!/bin/bash
+echo "Re-init project ..."
+bin/stop
+docker-compose down
+docker-compose build
+bin/start
