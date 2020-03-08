@@ -4,4 +4,4 @@
 CONFIG_SRC=$(cd -P "./../compose" && pwd)
 export $(xargs < $CONFIG_SRC/.env)
 
-bin/cli mysql -hdb -u$MYSQL_USER -p$$MYSQL_PASSWORD $MYSQL_DATABASE
+bin/cli mysql -hdb -u$MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE
