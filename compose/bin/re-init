@@ -1,6 +1,17 @@
 #!/bin/bash
+
 echo "Re-init project ..."
 bin/stop
 docker-compose down
 docker-compose build
 bin/start
+
+echo "Re-store project ..."
+bin/copytocontainer lib
+bin/copytocontainer vendor
+bin/copytocontainer pub
+bin/copytocontainer setup
+
+echo "Update project ..."
+bin/composer install
+bin/magento setup:up

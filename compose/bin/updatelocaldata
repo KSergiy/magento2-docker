@@ -1,0 +1,10 @@
+#!/bin/bash
+
+REAL_SRC=$(cd -P "./../html" && pwd)
+rm -rf $REAL_SRC/pub
+rm -rf $REAL_SRC/vendor
+rm -rf $REAL_SRC/seutp
+
+bin/copyfromcontainer pub
+bin/copyfromcontainer seutp
+bin/copyfromcontainer vendor
