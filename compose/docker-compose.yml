@@ -72,6 +72,8 @@ services:
 
 volumes:
     appdata:
+        external: true
+        name: ${PROJECT_NAME}_appdata
     dbdata:
     sockdata:
     rabbitmqdata:

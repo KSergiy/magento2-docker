@@ -9,6 +9,8 @@ REAL_SRC=$(cd -P "./../html" && pwd)
 
 bin/stop
 
+bin/create-volume "${PROJECT_NAME}_appdata"
+
 # fix for invalid google-shopping-api checksum contained in archive installs (temporary fix until nexcess archive is patched)
 sed -e 's/5f5929ef9f2ec4ca048a2add261d22c92807630f/ce31e720d60451784b9fdb3769e43e149f50d436/' $REAL_SRC/composer.lock > composer.lock && mv composer.lock $REAL_SRC/composer.lock
 
@@ -59,7 +61,7 @@ echo "Forcing reinstall of composer deps to ensure perms & reqs..."
 bin/clinotty composer global require hirak/prestissimo
 bin/clinotty composer install
 
-bin/clinotty bin/magento setup:install \
+bin/magento setup:install \
   --db-host=db \
   --db-name=$MYSQL_DATABASE \
   --db-user=$MYSQL_USER \
