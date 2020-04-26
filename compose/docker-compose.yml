@@ -18,6 +18,8 @@ services:
             - appdata:/var/www/html
             - sockdata:/sock
             - ssldata:/etc/nginx/certs
+        networks:
+            - docker-network
 
     phpfpm:
         container_name: ${PROJECT_NAME}-phpfpm
@@ -28,6 +30,8 @@ services:
         links:
             - db
         volumes: *appvolumes
+        networks:
+            - docker-network
 
     db:
         container_name: ${PROJECT_NAME}-db
@@ -37,10 +41,14 @@ services:
         env_file: cfg/db.env
         volumes: 
             - dbdata:/var/lib/mysql
+        networks:
+            - docker-network
 
     redis:
         container_name: ${PROJECT_NAME}-redis
         image: redis:5.0
+        networks:
+            - docker-network
 
     rabbitmq:
         container_name: ${PROJECT_NAME}-rabbitmq
@@ -50,6 +58,8 @@ services:
             - "5672:5672"
         volumes:
             - rabbitmqdata:/var/lib/rabbitmq
+        networks:
+            - docker-network
 
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
@@ -61,6 +71,8 @@ services:
             - "8080:80"
         volumes:
             - /sessions
+        networks:
+            - docker-network
 
 #    elasticsearch:
 #        container_name: ${PROJECT_NAME}-elasticsearch
@@ -78,3 +90,6 @@ volumes:
     sockdata:
     rabbitmqdata:
     ssldata:
+
+networks:
+    docker-network:

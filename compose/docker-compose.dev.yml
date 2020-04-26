@@ -10,7 +10,7 @@ services:
         - ./../html/composer.json:/var/www/html/composer.json:delegated
         - ./../html/composer.lock:/var/www/html/composer.lock:delegated
         # - ./../html/nginx.conf.sample:/var/www/html/nginx.conf.sample:delegated
-        - ./../html/pub/static:/var/www/html/pub/static:delegated
+        # - ./../html/pub/static:/var/www/html/pub/static:delegated
 
   phpfpm:
     volumes: *appvolumes
@@ -21,6 +21,8 @@ services:
     ports:
       - "1025"
       - "8025:8025"
+    networks:
+      - docker-network
 
   # Disabling cron by default as it uses higher CPU, enable if needed
   #cron:

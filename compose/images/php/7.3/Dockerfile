@@ -58,8 +58,6 @@ RUN curl -o /tmp/ssh2-1.2.tgz https://pecl.php.net/get/ssh2 \
     && pear install /tmp/ssh2-1.2.tgz \
     && rm /tmp/ssh2-1.2.tgz \
     && docker-php-ext-enable ssh2
-#RUN pecl install ssh2-1.2 \
-#  && docker-php-ext-enable ssh2
 
 RUN groupadd -g 1000 app \
     && useradd -g 1000 -u 1000 -d /var/www -s /bin/bash app
@@ -96,8 +94,8 @@ COPY conf/php.ini /usr/local/etc/php/
 COPY conf/php-fpm.conf /usr/local/etc/
 COPY bin/cronstart /usr/local/bin/
 
-RUN mkdir -p /var/www/html /sock \
-    && chown -R app:app /var/www /var/www/html /usr/local/etc/php/conf.d /sock
+RUN mkdir -p /var/www/html /sock /sock/www \
+    && chown -R app:app /var/www /var/www/html /usr/local/etc/php/conf.d /sock /sock/www
 
 USER app:app
 
