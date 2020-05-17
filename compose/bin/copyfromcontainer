@@ -7,6 +7,6 @@ if [ "$1" == "--all" ]; then
   docker cp $(docker-compose ps -q phpfpm|awk '{print $1}'):/var/www/html/./ $REAL_SRC
   echo "Completed copying all files from container to host"
 else
-  docker cp $(docker-compose ps -q phpfpm|awk '{print $1}'):/var/www/html/$1 $REAL_SRC
+  docker cp $(docker-compose ps -q phpfpm|awk '{print $1}'):/var/www/html/$1 $REAL_SRC/$1
   echo "Completed copying $1 from container to host"
 fi
