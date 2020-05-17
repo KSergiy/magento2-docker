@@ -23,8 +23,8 @@ RUN ( \
 COPY ./conf/nginx.conf /etc/nginx/
 COPY ./conf/default.conf /etc/nginx/conf.d/
 
-RUN mkdir -p /etc/nginx/html /var/cache/nginx /var/cache/nginx/client_temp \
-    && chown -R app:app /etc/nginx /var/cache/nginx /var/cache/nginx/client_temp /var/run/nginx.pid /sock
+RUN mkdir -p  /var/www/html /etc/nginx/html /var/cache/nginx /var/cache/nginx/client_temp \
+    && chown -R app:app /var/www /var/www/html /etc/nginx /var/cache/nginx /var/cache/nginx/client_temp /var/run/nginx.pid /sock
 
 EXPOSE 8080 8443
 

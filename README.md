@@ -1,5 +1,23 @@
 # Docker devkit for developing Magento 2 projects #
 
+### Base commands:
+1. Connect to DB: 
+```
+bin/cli mysql -h db -umagento -pmagento magento
+```
+2. Import DB:
+```
+bin/clinotty mysql -h db -u root -pmagento magento < dbdump.sql 
+```
+3. Make DB Dump:
+```
+bin/clinotty mysqldump -hdb -uroot -pmagento magento | gzip > magento.sql.gz
+```
+4. Creating volume before start working
+```
+bin/create-volume magento_appdata | magento - is project name
+```
+
 ### Project structure:
 
 1. compose - the folder with docker files
@@ -26,4 +44,10 @@
 6. Docker containerL -v /<local project dir>/html/:/var/www/html/ -e serverName=docker
 7. Tab Debug -> Xdebug -> Debug port -> 9001
 8. Tab Debug -> DBGp Proxy -> IDE Key: PHPSTORM, Host: docker, Port: 9001
-9. Add PHP Remote Debug > where set server name: docker and set path 
+9. Add PHP Remote Debug > where set server name: docker and set path
+
+
+### TODO:
+- Add correct and full documentation
+- Move all configs to .env file
+- Optimize and Fix switching between projects 
