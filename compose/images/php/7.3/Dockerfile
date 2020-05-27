@@ -1,5 +1,9 @@
 FROM php:7.3-fpm-buster
 
+RUN groupadd -g 1000 app \
+    && useradd -g 1000 -u 1000 -d /var/www -s /bin/bash app
+RUN chmod 1777 /tmp
+
 RUN apt-get update && apt-get install -y \
     cron \
     git \
@@ -59,9 +63,6 @@ RUN curl -o /tmp/ssh2-1.2.tgz https://pecl.php.net/get/ssh2 \
     && rm /tmp/ssh2-1.2.tgz \
     && docker-php-ext-enable ssh2
 
-RUN groupadd -g 1000 app \
-    && useradd -g 1000 -u 1000 -d /var/www -s /bin/bash app
-
 RUN apt-get install -y gnupg \
     && curl -sL https://deb.nodesource.com/setup_12.x | bash - \
     && apt-get install -y nodejs \
@@ -94,8 +95,8 @@ COPY conf/php.ini /usr/local/etc/php/
 COPY conf/php-fpm.conf /usr/local/etc/
 COPY bin/cronstart /usr/local/bin/
 
-RUN mkdir -p /var/www/html /sock /sock/www \
-    && chown -R app:app /var/www /var/www/html /usr/local/etc/php/conf.d /sock /sock/www
+RUN mkdir -p /var/www/html /sock \
+    && chown -R app:app /var/www /var/www/html /usr/local/etc/php/conf.d /sock
 
 USER app:app
 

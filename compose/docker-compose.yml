@@ -16,7 +16,7 @@ services:
         volumes: &appvolumes
             - ~/.composer:/var/www/.composer:delegated
             - appdata:/var/www/html
-            - sockdata:/sock
+            - ./sock:/sock:delegated
             - ssldata:/etc/nginx/certs
         networks:
             - docker-network

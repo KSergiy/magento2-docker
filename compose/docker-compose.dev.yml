@@ -11,7 +11,9 @@ services:
         - ./../html/composer.lock:/var/www/html/composer.lock:delegated
         - ./../html/auth.json:/var/www/html/auth.json:delegated
         # - ./../html/nginx.conf.sample:/var/www/html/nginx.conf.sample:delegated
-        # - ./../html/pub/static:/var/www/html/pub/static:delegated
+        # - ./../html/pub/media:/var/www/html/pub/media:delegated
+        # For Linux commit previous and ucommit next
+        # - ./../html:/var/www/html:delegated
 
   phpfpm:
     volumes: *appvolumes
