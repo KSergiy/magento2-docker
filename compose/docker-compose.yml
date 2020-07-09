@@ -15,11 +15,12 @@ services:
             - phpfpm
         volumes: &appvolumes
             - ~/.composer:/var/www/.composer:delegated
+            - ~/.ssh:/root/.ssh:ro
             - appdata:/var/www/html
             - ./sock:/sock:delegated
             - ssldata:/etc/nginx/certs
-        networks:
-            - docker-network
+#        secrets:
+#            - host_ssh_key
 
     phpfpm:
         container_name: ${PROJECT_NAME}-phpfpm
@@ -30,8 +31,8 @@ services:
         links:
             - db
         volumes: *appvolumes
-        networks:
-            - docker-network
+#        secrets:
+#            - host_ssh_key
 
     db:
         container_name: ${PROJECT_NAME}-db
@@ -47,8 +48,6 @@ services:
     redis:
         container_name: ${PROJECT_NAME}-redis
         image: redis:5.0
-        networks:
-            - docker-network
 
     rabbitmq:
         container_name: ${PROJECT_NAME}-rabbitmq
@@ -58,8 +57,6 @@ services:
             - "5672:5672"
         volumes:
             - rabbitmqdata:/var/lib/rabbitmq
-        networks:
-            - docker-network
 
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
@@ -71,8 +68,6 @@ services:
             - "8080:80"
         volumes:
             - /sessions
-        networks:
-            - docker-network
 
 #    elasticsearch:
 #        container_name: ${PROJECT_NAME}-elasticsearch
@@ -91,5 +86,7 @@ volumes:
     rabbitmqdata:
     ssldata:
 
-networks:
-    docker-network:
+# Block with secrets
+# secrets:
+#    host_ssh_key:
+#        file: ~/.ssh/id_rsa

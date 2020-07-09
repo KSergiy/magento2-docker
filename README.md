@@ -46,6 +46,10 @@ bin/create-volume magento_appdata | magento - is project name
 8. Tab Debug -> DBGp Proxy -> IDE Key: PHPSTORM, Host: docker, Port: 9001
 9. Add PHP Remote Debug > where set server name: docker and set path
 
+### Add host ssh key to docker
+- in file docker-compose.yml un-commit lines with secret
+- set yours private key
+- in Dockerfile un-commit lines with commit secret: # RUN mkdir /var/www/.ssh && ln -s /run/secrets/host_ssh_key /var/www/.ssh/id_rsa
 
 ### TODO:
 - Add correct and full documentation

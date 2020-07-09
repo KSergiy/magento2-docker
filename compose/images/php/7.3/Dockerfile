@@ -95,6 +95,9 @@ COPY conf/php.ini /usr/local/etc/php/
 COPY conf/php-fpm.conf /usr/local/etc/
 COPY bin/cronstart /usr/local/bin/
 
+## Added external ssh key to docker
+# RUN mkdir /var/www/.ssh && ln -s /run/secrets/host_ssh_key /var/www/.ssh/id_rsa
+
 RUN mkdir -p /var/www/html /sock \
     && chown -R app:app /var/www /var/www/html /usr/local/etc/php/conf.d /sock
 
