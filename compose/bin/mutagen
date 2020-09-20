@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Read data from .env file
+CONFIG_SRC=$(cd -P "./../compose" && pwd)
+PROJECT_SRC=$(cd -P "./../html" && pwd)
+export $(xargs < $CONFIG_SRC/.env)
+
+if [[ -z "$@" ]]; then
+echo "Usage:
+  bin/mutagen [command]
+
+Available Commands:
+  start                 Start mutagen daemon and create sync sessions
+  stop                  Terminate all active sync sessions and stop mutagen daemon
+  flush                 Flush all synchronization sessions
+"
+elif [[ "$1" == "start" ]]; then
+  bin/start
+  bin/fixowns app
+  bin/fixowns var
+
+  mutagen daemon start
+  mutagen sync create \
+    --label=$PROJECT_NAME=html \
+    --sync-mode=two-way-resolved \
+    --default-owner-beta=app \
+    --default-group-beta=app \
+    --ignore=/.idea \
+    --ignore=/.github \
+    --ignore=/app/code \
+    --ignore=/app/design \
+    --ignore=/pub/static \
+    --ignore=/var/view_preprocessed \
+    --ignore=/var/session \
+    --ignore=/var/debug \
+    --ignore=/var/cache \
+    --ignore=/var/log \
+    --watch-mode-alpha=no-watch \
+    --symlink-mode=posix-raw \
+    --ignore-vcs \
+    $PROJECT_SRC docker://app@$PROJECT_NAME-app/var/www/html
+
+elif [[ "$1" == "stop" ]]; then
+    mutagen terminate --label-selector=$PROJECT_NAME
+    mutagen daemon stop
+    bin/stop
+elif [[ "$1" == "flush" ]]; then
+    mutagen flush --label-selector=$PROJECT_NAME
+fi
